@@ -1,6 +1,7 @@
 package com.example.gamerepeat.fragments
 
 import android.annotation.SuppressLint
+import android.net.http.SslCertificate.restoreState
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +22,10 @@ class WebFragment : Fragment() {
     ): View {
         binding = FragmentWebBinding.inflate(inflater, container, false)
         return binding.root
+//        if (savedInstanceState != null)
+//            restoreState(savedInstanceState)
+//        else
+//            binding.webView.loadUrl("https://ohmytraff.space/api")
     }
 //        override fun onCreate(savedInstanceState: Bundle?) {
 //        super.onCreate(savedInstanceState)
@@ -53,7 +58,6 @@ class WebFragment : Fragment() {
                         }
                 }
             })
-
             if (savedInstanceState != null)
                 restoreState(savedInstanceState);
             else
@@ -77,5 +81,10 @@ class WebFragment : Fragment() {
         }
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, callback)
     }
+
+//    override fun onSaveInstanceState(outState: Bundle) {
+//        super.onSaveInstanceState(outState)
+//        binding.webView.saveState(outState)
+//    }
 
     }
