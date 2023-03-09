@@ -5,14 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebSettings
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import android.webkit.*
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import com.example.gamerepeat.R
 import com.example.gamerepeat.databinding.FragmentWebBinding
 
+@Suppress("UNREACHABLE_CODE")
 class WebFragment : Fragment() {
     private lateinit var binding: FragmentWebBinding
     override fun onCreateView(
@@ -36,7 +36,23 @@ class WebFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.webView.apply {
-            webViewClient = WebViewClient()
+
+            webViewClient = (object  : WebViewClient(){
+                override fun onReceivedHttpError(
+                    view: WebView?,
+                    request: WebResourceRequest?,
+                    errorResponse: WebResourceResponse?
+                ) {
+                    super.onReceivedHttpError(view, request, errorResponse)
+                    if (request?.url != null)
+                        if (request.url.toString() == "https://ohmytraff.space/api" && errorResponse?.statusCode == 404) {
+                    activity?.supportFragmentManager
+                        ?.beginTransaction()
+                        ?.replace(R.id.flMain, GameFragment())
+                        ?.commit()
+                        }
+                }
+            })
 
             if (savedInstanceState != null)
                 restoreState(savedInstanceState);
@@ -61,4 +77,5 @@ class WebFragment : Fragment() {
         }
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, callback)
     }
+
     }
