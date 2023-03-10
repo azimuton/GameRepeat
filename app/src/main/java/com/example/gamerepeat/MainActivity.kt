@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         if(savedRestoreStateUrl != "default") {
             binding.webView.loadUrl(savedRestoreStateUrl.toString())
         } else {
-            binding.webView.loadUrl("//https://ohmytraff.space/api")
+            binding.webView.loadUrl("https://ohmytraff.space/api")
         }
 
         binding.webView.apply {
@@ -37,7 +37,8 @@ class MainActivity : AppCompatActivity() {
                 ) {
                     super.onReceivedHttpError(view, request, errorResponse)
                     if (request?.url != null)
-                        if (request.url.toString() == "//https://ohmytraff.space/api" && errorResponse?.statusCode == 404) {
+                        if (request.url.toString() == "https://ohmytraff.space/api" &&
+                            errorResponse?.statusCode == 404) {
                             binding.flMain.visibility = View.VISIBLE
                             supportFragmentManager
                                 .beginTransaction()
@@ -61,10 +62,7 @@ class MainActivity : AppCompatActivity() {
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val networkInfo = connectivityManager.activeNetworkInfo
         if (networkInfo != null && networkInfo.isConnectedOrConnecting) {
-//            supportFragmentManager
-//                .beginTransaction()
-//                .replace(R.id.flMain, GameFragment())
-//                .commit()
+
         } else {
             binding.flMain.visibility = View.VISIBLE
             binding.webView.visibility = View.GONE
