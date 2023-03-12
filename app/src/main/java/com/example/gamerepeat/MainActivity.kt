@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         if(savedRestoreStateUrl != "default") {
             binding.webView.loadUrl(savedRestoreStateUrl.toString())
         } else {
-            binding.webView.loadUrl("//https://ohmytraff.space/api")
+            binding.webView.loadUrl("https://ohmytraff.space/api")
         }
 
         binding.webView.apply {
