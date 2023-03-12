@@ -3,9 +3,11 @@ package com.example.gamerepeat
 import android.annotation.SuppressLint
 import android.content.Context
 import android.net.ConnectivityManager
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.webkit.*
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.gamerepeat.databinding.ActivityMainBinding
 import com.example.gamerepeat.fragments.GameFragment
@@ -25,26 +27,27 @@ class MainActivity : AppCompatActivity() {
         if(savedRestoreStateUrl != "default") {
             binding.webView.loadUrl(savedRestoreStateUrl.toString())
         } else {
-            binding.webView.loadUrl("https://ohmytraff.space/api")
+            binding.webView.loadUrl("//https://ohmytraff.space/api")
         }
 
         binding.webView.apply {
             webViewClient = (object  : WebViewClient(){
+
                 override fun onReceivedHttpError(
                     view: WebView?,
                     request: WebResourceRequest?,
                     errorResponse: WebResourceResponse?
                 ) {
-                    super.onReceivedHttpError(view, request, errorResponse)
                     if (request?.url != null)
-                        if (request.url.toString() == "https://ohmytraff.space/api" &&
-                            errorResponse?.statusCode == 404) {
+                        if (request.url.toString() == "https://ohmytraff.space/api" && errorResponse?.statusCode == 404) {
+                            binding.webView.visibility = View.GONE
                             binding.flMain.visibility = View.VISIBLE
                             supportFragmentManager
                                 .beginTransaction()
                                 .replace(R.id.flMain, GameFragment())
                                 .commit()
                         }
+                    super.onReceivedHttpError(view, request, errorResponse)
                 }
             })
             settings.apply {
@@ -62,7 +65,10 @@ class MainActivity : AppCompatActivity() {
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val networkInfo = connectivityManager.activeNetworkInfo
         if (networkInfo != null && networkInfo.isConnectedOrConnecting) {
-
+//            supportFragmentManager
+//                .beginTransaction()
+//                .replace(R.id.flMain, GameFragment())
+//                .commit()
         } else {
             binding.flMain.visibility = View.VISIBLE
             binding.webView.visibility = View.GONE
